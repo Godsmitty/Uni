@@ -1,0 +1,45 @@
+//Program to encrypt user input using a caesar cipher
+
+
+#include <stdio.h>
+int encrypt (int c, int key);
+int main(void) {
+    
+    int key;
+    scanf("%d", &key); //scanning in how much to shift by
+    int c = getchar(); //scanning in input 
+    while (c != EOF) { //looping until EOF
+        int encryptedChar = encrypt(c, key); //encrypts any input
+        putchar(encryptedChar); //prints out encrypted input
+        c = getchar(); //ready to scan in new input
+    }
+ 
+    return 0;
+}
+
+int encrypt (int c, int key) {
+    if (c >= 'a' && c <= 'z') { //if input is lowercase
+        int aphabetPosition = c - 'a'; 
+        int encryptedChar = (aphabetPosition + key) % 26;
+        //if shift is negative we can express as a positive shift
+        //i.e. 'c' shifted by -2 and 24 both = 'a'
+        if (encryptedChar < 0) {
+            encryptedChar += 26;
+        }
+        return 'a' + encryptedChar;
+    }
+    
+    if (c >= 'A' && c <= 'Z') {//if input is uppercase
+        int aphabetPosition = c - 'A';
+        int encryptedChar = (aphabetPosition + key) % 26;
+        //if shift is negative we can express as a positive shift
+        //i.e. 'C' shifted by -2 and 24 both = 'A'
+        if (encryptedChar < 0) {
+            encryptedChar += 26;
+        }
+        return 'A' + encryptedChar; 
+    }
+    else {
+        return c;
+    }
+}
