@@ -1,0 +1,81 @@
+//Program to decode a substitution cipher
+//James Tran z5309399
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#define ALPHABET 28
+int decode (int c, char * key, char * alphabet);
+int make_upper_case (int c);
+int make_lower_case (int c);
+
+int main(void) {
+    char key[ALPHABET];
+    char alphabet[] = "abcdefghijklmnopqrstuvwxyz";
+    fgets(key, ALPHABET, stdin);
+    int c = getchar();
+    while (c != EOF) { //EOF loop to get and print encrypted text
+        int encryptedChar = decode(c, key, alphabet);
+        putchar(encryptedChar);
+        c = getchar();
+    }
+
+    return 0;
+}
+
+int decode (int c, char * key, char * alphabet) {
+    if (c >= 'a' && c <= 'z') {
+        int i = 0;
+        int j = 0;
+        int alphabetPosition;
+        while (j == 0) {
+            if (key[i] == c) {
+                alphabetPosition = i;
+                j = 1;
+            } else {
+                i++;
+            }
+        }
+        int encryptedChar = alphabet[alphabetPosition];
+        return encryptedChar;
+  
+    }   
+    if (c >= 'A' && c <= 'Z') {
+        c = make_lower_case(c);
+        int i = 0;
+        int j = 0;
+        int alphabetPosition;
+        while (j == 0) {
+            if (key[i] == c) {
+                alphabetPosition = i;
+                j = 1;
+            } else {
+                i++;
+            }
+        }
+        int encryptedChar = alphabet[alphabetPosition]; 
+        int upper = make_upper_case(encryptedChar); 
+        return upper;
+   
+    } else {
+        return c;
+    }
+}
+
+int make_upper_case(int c) {
+    if (c >= 'a' && c <= 'z') {
+        int alphabetPosition = c - 'a';
+        return 'A' + alphabetPosition;
+    } else {
+        return c;
+    }
+}
+
+int make_lower_case(int c) {
+    if (c >= 'A' && c <= 'Z') {
+        int alphabetPosition = c - 'A';
+        return 'a' + alphabetPosition;
+    } else {
+        return c;
+    }
+}
