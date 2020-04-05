@@ -1,0 +1,42 @@
+//Program to encrypt user input according to an inputted substitution cipher
+//James Tran z5309399
+
+#include <stdio.h>
+#include <string.h>
+#define ALPHABET 28
+int sub (int c, char * key);
+
+int main(void) {
+    char key[ALPHABET]; //declaring string for encryption key
+    fgets(key, ALPHABET, stdin); //getting input from user
+    int c = getchar();
+    while (c != EOF) { //EOF loop to get and print encrypted text
+        int encryptedChar = sub(c, key);
+        putchar(encryptedChar);
+        c = getchar();
+    }
+
+    return 0;
+}
+
+int sub (int c, char * key) {
+    if (c >= 'a' && c <= 'z') {
+        int alphabetPosition = c - 'a';
+        int encryptedChar = key[alphabetPosition];
+        return encryptedChar;
+    }  
+    
+    if (c >= 'A' && c <= 'Z') {
+        int alphabetPosition = c - 'A';
+        int encryptedChar = key[alphabetPosition];
+        
+        // -' ' is basically minusing the ASCII value for space
+        // which is 32, which happens to be the difference in upper 
+        // and lower letters. I.e. 'a' = 97, 'A' = 65.   97-65 = 32
+        return encryptedChar - ' ';
+    }  
+       
+    else {
+        return c;
+    }
+}
