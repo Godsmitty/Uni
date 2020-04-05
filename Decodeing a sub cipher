@@ -1,5 +1,5 @@
 //Program to decode a substitution cipher
-//James Tran z5309399
+
 
 #include <stdio.h>
 #include <string.h>
