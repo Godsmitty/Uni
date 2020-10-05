@@ -1,0 +1,50 @@
+#include <stdint.h>
+#include <stdlib.h>
+#include <assert.h>
+
+#include "floats.h"
+
+#define SIGN_SHIFT       31         
+#define SIGN_MASK        0x1       
+#define EXPONENT_SHIFT   23         
+#define EXPONENT_MASK    0xFF       
+#define FRACTION_SHIFT   0         
+#define FRACTION_MASK    0x7FFFFF   
+#define EXPONENT_INF_NAN   0xFF
+
+// Multiplies a float by 2048 using bit operations
+
+uint32_t float_2048(uint32_t float_value)
+
+{
+    float_components_t result;
+
+    result.exponent = (float_value >> EXPONENT_SHIFT) & EXPONENT_MASK;
+
+    result.fraction = (float_value >> FRACTION_SHIFT) & FRACTION_MASK;
+
+    result.sign = (float_value >> SIGN_SHIFT) & SIGN_MASK;
+
+    //if f is not either +0, -0, +inf or -inf, or Nan
+
+    if (result.exponent > 0 && result.exponent < EXPONENT_INF_NAN)
+
+    {
+        // If f is not zero and isn't too large to be represented as a float
+        result.exponent += 11;
+
+        // if the result is too large to be represented as a float
+        if (result.exponent >= EXPONENT_INF_NAN)
+        {
+            result.fraction = 0;
+
+            result.exponent = EXPONENT_INF_NAN;
+        }
+
+    }
+    
+    uint32_t answer = (result.sign << SIGN_SHIFT) |
+    (result.exponent << EXPONENT_SHIFT) |
+    (result.fraction << FRACTION_SHIFT);
+    return answer;
+}
